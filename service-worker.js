@@ -2,9 +2,9 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open('my-pwa-cache').then((cache) => {
             return cache.addAll([
-                './',
-                './index.html',
-                './app.js',
+                '/giobypass/',
+                '/giobypass/index.html',
+                '/giobypass/app.js',
             ]);
         })
     );
