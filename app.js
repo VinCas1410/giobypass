@@ -8,10 +8,34 @@ if ('serviceWorker' in navigator) {
         });
 }
 
-$(document).ready(function () {
-    console.log('Hello, jQuery!');
+let deferredPrompt;
 
-    $('#openUrlButton').click(function () {
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const addBtn = document.createElement('button');
+    addBtn.textContent = 'Install PWA';
+    document.body.appendChild(addBtn);
+
+    addBtn.addEventListener('click', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            deferredPrompt = null;
+            addBtn.remove();
+        });
+    });
+});
+
+$(document).ready(function() {
+    console.log('Hello, jQuery!');
+    
+    $('#openUrlButton').click(function() {
         const url = $('#urlInput').val();
         if (url) {
             window.open(url, "_self");
